@@ -27,7 +27,7 @@ public class QuickStarter {
         clazzMap.put("2", IteyeBlog.class);
         clazzMap.put("3", News163.class);
         urlMap = new LinkedHashMap<String, String>();
-        urlMap.put("1", "http://my.oschina.net/flashsword/blog");
+        urlMap.put("1", "https://my.oschina.net/flashsword/blog");
         urlMap.put("2", "http://flashsword20.iteye.com/");
         urlMap.put("3", "http://news.163.com/");
     }
