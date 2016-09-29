@@ -28,6 +28,7 @@ public class ParseNewHouseSortTable extends ParseTable {
 		Element tongbi = it.next();
 		Element huanbi = it.next();
 		Element dingji = it.next();
+		data.setCity(cityname);
 		data.setTongbi(Double.parseDouble(tongbi.text()));
 		data.setHuanbi(Double.parseDouble(huanbi.text()));
 		data.setDingji(Double.parseDouble(dingji.text()));

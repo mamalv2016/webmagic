@@ -14,6 +14,7 @@ import com.renjie120.jsoup.ParseNewHouseTable;
 import com.renjie120.jsoup.ParseSecHandlHouseTable;
 import com.renjie120.jsoup.ParseSecHandsHouseSortTable;
 import com.renjie120.jsoup.dto.ReadFromUrl;
+import com.renjie120.jsoup.util.MockUtil;
 
 public class ParseHtml {
 	final static String url = "http://www.stats.gov.cn/tjsj/zxfb/201503/t20150318_696253.html";
@@ -21,15 +22,18 @@ public class ParseHtml {
 	 
 
 	public static void main(String[] args) throws IOException {
-		ReadFromUrl readFromUrl = new ReadFromUrl(url, "d:\\tongji.html");
-		String content = readFromUrl.readFromUrl();
- 
+//		Document doc = Jsoup.connect(url).get();
+//		ReadFromUrl readFromUrl = new ReadFromUrl(url, "d:\\tongji.html"); 
+//		String content = readFromUrl.readFromUrl(); 
+// 
+		String content  = MockUtil.readFile("d:\\tongji.html","");
 		Document doc = Jsoup.parse(content);
 		Elements allP = doc.select("table.MsoNormalTable");
-		ParseNewHouseTable t1 = new ParseNewHouseTable(allP.get(0));
-		ParseNewCommercialHouseTable t2 = new ParseNewCommercialHouseTable(allP.get(1));
-		ParseSecHandlHouseTable t3 = new ParseSecHandlHouseTable(allP.get(2));
+//		ParseNewHouseTable t1 = new ParseNewHouseTable(allP.get(0));
+//		ParseNewCommercialHouseTable t2 = new ParseNewCommercialHouseTable(allP.get(1));
+//		ParseSecHandlHouseTable t3 = new ParseSecHandlHouseTable(allP.get(2));
 		ParseNewHouseSortTable t4 = new ParseNewHouseSortTable(allP.get(3));
-		ParseSecHandsHouseSortTable t5 = new ParseSecHandsHouseSortTable(allP.get(4)); 
+		t4.saveToDb();
+//		ParseSecHandsHouseSortTable t5 = new ParseSecHandsHouseSortTable(allP.get(4)); 
 	}
 }
