@@ -10,6 +10,12 @@ import org.jsoup.select.Elements;
 import com.renjie120.jsoup.dto.DataInfo;
 import com.renjie120.jsoup.dto.StatisType;
 
+/**
+ * 解析新房销售数据
+ * 保存表table_new_house
+ * @author Administrator
+ *
+ */
 public class ParseNewHouseTable extends ParseTable {
 	public ParseNewHouseTable(Element table) {
 		super(table);

@@ -11,6 +11,12 @@ import com.renjie120.jsoup.dto.DataInfo;
 import com.renjie120.jsoup.dto.HouseType;
 import com.renjie120.jsoup.dto.StatisType;
 
+/**
+ * 提取二手房分类数据.
+ * 插入数据表：table_sec_hand_house_sort
+ * @author Administrator
+ *
+ */
 public class ParseSecHandsHouseSortTable extends ParseTable {
 	public ParseSecHandsHouseSortTable(Element table) {
 		super(table);

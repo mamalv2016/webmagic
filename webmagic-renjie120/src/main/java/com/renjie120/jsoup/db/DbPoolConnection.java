@@ -8,12 +8,15 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import javax.sql.DataSource;
-
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alibaba.druid.pool.DruidPooledConnection;
 
+/**
+ * 一个简单的druid数据连接池.
+ * @author Administrator
+ *
+ */
 public class DbPoolConnection {
 	private static DbPoolConnection databasePool = null;
 	private static DruidDataSource dds = null;

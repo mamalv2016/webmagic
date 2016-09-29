@@ -10,6 +10,12 @@ import org.jsoup.select.Elements;
 import com.renjie120.jsoup.dto.DataInfo;
 import com.renjie120.jsoup.dto.StatisType;
 
+/**
+ * 解析二手销售数据
+ * 插入表table_sec_house
+ * @author Administrator
+ *
+ */
 public class ParseSecHandlHouseTable extends ParseTable {
 	public ParseSecHandlHouseTable(Element table) {
 		super(table);

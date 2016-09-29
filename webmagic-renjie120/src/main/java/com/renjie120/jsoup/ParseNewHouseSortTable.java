@@ -11,6 +11,12 @@ import com.renjie120.jsoup.dto.DataInfo;
 import com.renjie120.jsoup.dto.HouseType;
 import com.renjie120.jsoup.dto.StatisType;
 
+/**
+ * 解析新房分类销售数据
+ * 保存表table_new_house_sort  
+ * @author Administrator
+ *
+ */
 public class ParseNewHouseSortTable extends ParseTable {
 	public ParseNewHouseSortTable(Element table) {
 		super(table);

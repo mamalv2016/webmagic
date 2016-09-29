@@ -16,6 +16,11 @@ import com.alibaba.druid.pool.DruidPooledConnection;
 import com.renjie120.jsoup.db.DbPoolConnection;
 import com.renjie120.jsoup.dto.DataInfo;
 
+/**
+ * 解析table对象，提取出来对应的表格数据.
+ * @author Administrator
+ *
+ */
 public abstract class ParseTable implements IParseTable {
 	protected Element table;
 	protected List<String> allCity;
@@ -29,8 +34,7 @@ public abstract class ParseTable implements IParseTable {
 		dataes = new ArrayList<DataInfo>();
 		allCity = new ArrayList<String>();
 		maps = new HashMap<String, DataInfo>();
-		parseTable();
-		saveToDb();
+		parseTable(); 
 	}
 
 	public int getYear() {
