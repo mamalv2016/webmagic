@@ -55,7 +55,8 @@
         <module>webmagic-saxon</module>
         <module>webmagic-samples</module>
         <module>webmagic-avalon</module>
-    </modules>
+    <module>webmagic-renjie120</module>
+  </modules>
 
     <dependencyManagement>
         <dependencies>
