@@ -11,7 +11,7 @@
 	<groupId>com.renjie120</groupId>
 	<artifactId>renjie120-database</artifactId>
 	<version>0.5.4-SNAPSHOT</version>
-	<name>webmagic-database</name>
+	<name>renjie120-database</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

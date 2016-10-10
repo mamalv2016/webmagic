@@ -2,7 +2,7 @@ package com.renjie120.dto;
 
 public class StatisPage {
 	// 流水号
-	private long id;
+	private Long id;
 	// url
 	private String url;
 	// 删除标记
@@ -12,10 +12,6 @@ public class StatisPage {
 	// 处理标记
 	private StatisPageStatus status;
 
-	public long getId() {
-		return id;
-	}
-
 	public String getDeleteFlag() {
 		return deleteFlag;
 	}
@@ -24,7 +20,11 @@ public class StatisPage {
 		this.deleteFlag = deleteFlag;
 	}
 
-	public void setId(long id) {
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 
