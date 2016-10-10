@@ -56,6 +56,8 @@
         <module>webmagic-samples</module>
         <module>webmagic-avalon</module>
     <module>webmagic-renjie120</module>
+    <module>webmagic-database</module>
+    <module>renjie120-common</module>
   </modules>
 
     <dependencyManagement>

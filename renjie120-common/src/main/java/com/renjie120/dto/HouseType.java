@@ -1,4 +1,4 @@
-package com.renjie120.jsoup.dto;
+package com.renjie120.dto;
 
 public enum HouseType {
 	BELLOW_90("1",1), ABOVE_90_BELLOW_144("2",2), ABOVE_144("3",3);

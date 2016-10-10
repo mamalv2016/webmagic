@@ -1,4 +1,4 @@
-package com.renjie120.jsoup.dto;
+package com.renjie120.dto;
 
 public enum StatisType {
 	NEW_HOUSE("1"), NEW_COMMERCIAL_HOUSE("2"), SECOND_HANDS_HOUSE("3"), NEW_HOUSE_SORTED(

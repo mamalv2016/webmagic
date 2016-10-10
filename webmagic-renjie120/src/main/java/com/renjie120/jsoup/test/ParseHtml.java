@@ -8,12 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import com.renjie120.jsoup.ParseNewCommercialHouseTable;
 import com.renjie120.jsoup.ParseNewHouseSortTable;
-import com.renjie120.jsoup.ParseNewHouseTable;
-import com.renjie120.jsoup.ParseSecHandlHouseTable;
-import com.renjie120.jsoup.ParseSecHandsHouseSortTable;
-import com.renjie120.jsoup.dto.ReadFromUrl;
 import com.renjie120.jsoup.util.MockUtil;
 
 public class ParseHtml {

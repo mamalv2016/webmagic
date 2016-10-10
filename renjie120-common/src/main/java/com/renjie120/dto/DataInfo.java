@@ -1,4 +1,4 @@
-package com.renjie120.jsoup.dto;
+package com.renjie120.dto;
 
 public class DataInfo {
 	private String city;

@@ -7,8 +7,8 @@ import java.util.List;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.renjie120.jsoup.dto.DataInfo;
-import com.renjie120.jsoup.dto.StatisType;
+import com.renjie120.dto.DataInfo;
+import com.renjie120.dto.StatisType;
 
 /**
  * 解析商品房销售数据

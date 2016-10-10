@@ -1,15 +1,15 @@
-package com.renjie120.jsoup.dto;
+package com.renjie120.dto;
 
 import java.io.IOException;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-public class ReadFromUrl {
+public class ReadFromUrl1 {
 	private String url;
 	private String fileName;
 
-	public ReadFromUrl(String url, String fileName) {
+	public ReadFromUrl1(String url, String fileName) {
 		this.url = url;
 		this.fileName = fileName;
 	}

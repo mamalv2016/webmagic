@@ -7,9 +7,9 @@ import java.util.List;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.renjie120.jsoup.dto.DataInfo;
-import com.renjie120.jsoup.dto.HouseType;
-import com.renjie120.jsoup.dto.StatisType;
+import com.renjie120.dto.DataInfo;
+import com.renjie120.dto.HouseType;
+import com.renjie120.dto.StatisType;
 
 /**
  * 提取二手房分类数据.

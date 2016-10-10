@@ -13,8 +13,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
-import com.renjie120.jsoup.db.DbPoolConnection;
-import com.renjie120.jsoup.dto.DataInfo;
+import com.renjie120.db.DbPoolConnection;
+import com.renjie120.dto.DataInfo;
 
 /**
  * 解析table对象，提取出来对应的表格数据.
@@ -98,8 +98,7 @@ public abstract class ParseTable implements IParseTable {
 				con.close();
 				dbp = null;
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) { 
 			e.printStackTrace();
 		}
 	}

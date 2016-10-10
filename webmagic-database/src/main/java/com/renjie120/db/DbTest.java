@@ -1,4 +1,4 @@
-package com.renjie120.jsoup.db;
+package com.renjie120.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
