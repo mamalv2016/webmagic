@@ -1,4 +1,4 @@
-package com.renjie120.webmagic;
+package com.renjie120.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,29 +18,29 @@ public class StatisPageDaoImpl implements IStatisPageDao {
 
 	@Override
 	public void batchInsert(List<StatisPage> pages) {
-		DruidPooledConnection con;
-		try {
-			if (pages != null && pages.size() > 0) {
-				DbPoolConnection dbp = DbPoolConnection.getInstance();
-				con = dbp.getConnection();
-
-				PreparedStatement ps = null;
-				for (StatisPage data : pages) {
-					StatisPage tempData = new StatisPage();
-					tempData.setUrl(data.getUrl());
-					
-					query(tempData);
-					ps = con.prepareStatement(generateSql(data));
-					ps.executeUpdate();
-				}
-				if (ps != null && !ps.isClosed())
-					ps.close();
-				con.close();
-				dbp = null;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+//		DruidPooledConnection con;
+//		try {
+//			if (pages != null && pages.size() > 0) {
+//				DbPoolConnection dbp = DbPoolConnection.getInstance();
+//				con = dbp.getConnection();
+//
+//				PreparedStatement ps = null;
+//				for (StatisPage data : pages) {
+//					StatisPage tempData = new StatisPage();
+//					tempData.setUrl(data.getUrl());
+//					
+//					query(tempData);
+//					ps = con.prepareStatement(generateSql(data));
+//					ps.executeUpdate();
+//				}
+//				if (ps != null && !ps.isClosed())
+//					ps.close();
+//				con.close();
+//				dbp = null;
+//			}
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override

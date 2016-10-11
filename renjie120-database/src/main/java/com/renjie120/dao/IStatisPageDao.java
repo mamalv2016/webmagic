@@ -1,4 +1,4 @@
-package com.renjie120.webmagic;
+package com.renjie120.dao;
 
 import java.util.List;
 
