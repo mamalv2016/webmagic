@@ -1,11 +1,11 @@
 package com.renjie120.dto;
 
 /**
- * 统计详情页面对象
+ * 统计列表页面对象
  * @author Administrator
  *
  */
-public class StatisPage {
+public class StatisList {
 	// 流水号
 	private Long id;
 	// url
