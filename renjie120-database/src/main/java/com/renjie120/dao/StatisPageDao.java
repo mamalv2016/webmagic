@@ -2,7 +2,6 @@ package com.renjie120.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,43 +12,9 @@ import com.renjie120.common.exception.ExceptionCode;
 import com.renjie120.common.exception.ExceptionWrapper;
 import com.renjie120.db.DbPoolConnection;
 import com.renjie120.dto.StatisPage;
-import com.renjie120.dto.StatisPageStatus;
 
 public class StatisPageDao {
-	public static void main(String[] args) {
-		StatisPageDao ado = new StatisPageDao();
-		
-	
-//		List<StatisPage> pages = new ArrayList();
-//		for(int i=0;i<100;i++){
-//			StatisPage page = new StatisPage();
-//			page.setDeleteFlag("1");
-//			page.setStatus(StatisPageStatus.NEW);
-//			page.setTitle("标题"+i);
-//			page.setUrl("ssssssssss"+i);
-//			pages.add(page);
-//		} 
-//		
-//		ado.batchInsert(pages);
-		
-		
-//		StatisPage query = new StatisPage();
-//		query.setTitle("2");
-//		
-//		List<StatisPage> ans = ado.query(query);
-//		System.out.println(ans);
-		
-		StatisPage condition = new StatisPage();
-		condition.setId(12L);
-		
-		List<StatisPage> oldObj = ado.query(condition);
-		StatisPage oldPage = oldObj.get(0);
-		
-		oldPage.setTitle("修改之后的值...");
-		
-		ado.update(condition, oldPage);
-	}
-
+	 
 	public void batchInsert(List<StatisPage> pages) {
 		DbPoolConnection dbp = DbPoolConnection.getInstance();
 		DruidPooledConnection con;
@@ -62,11 +27,11 @@ public class StatisPageDao {
 				StatisPage sp = pages.get(k);
 				pstmt.setString(1, sp.getUrl());
 				pstmt.setString(2, sp.getDeleteFlag());
-				pstmt.setString(3, sp.getStatus().getType() + "");
+				pstmt.setString(3, sp.getStatus() + "");
 				pstmt.setString(4, sp.getTitle());
 				// 加入批处理
 				pstmt.addBatch();
-			}  
+			}
 			pstmt.executeBatch(); // 执行批处理
 			con.commit();
 			pstmt.close();
@@ -78,13 +43,12 @@ public class StatisPageDao {
 		}
 	}
 
-	public void update(StatisPage condition,StatisPage newPage) {
+	public void update(StatisPage condition, StatisPage newPage) {
 		DbPoolConnection dbp = DbPoolConnection.getInstance();
 		DruidPooledConnection con;
 		try {
 			con = dbp.getConnection();
-			con.setAutoCommit(false);
-			String sql = getUpdateStr(condition,newPage);
+			String sql = getUpdateStr(condition, newPage);
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			int index = 1;
 			if (!StringUtils.isEmpty(newPage.getUrl())) {
@@ -96,16 +60,14 @@ public class StatisPageDao {
 			}
 
 			if (newPage.getStatus() != null) {
-				pstmt.setString(index++, newPage.getStatus().getType()+"");
+				pstmt.setString(index++, newPage.getStatus() + "");
 			}
 
 			if (!StringUtils.isEmpty(newPage.getDeleteFlag())) {
 				pstmt.setString(index++, newPage.getDeleteFlag());
-			} 
-			 
-			pstmt.executeBatch(); // 执行批处理
-			con.commit();
-			
+			}
+
+			pstmt.execute();
 			con.close();
 			pstmt.close();
 			dbp = null;
@@ -115,14 +77,14 @@ public class StatisPageDao {
 		}
 	}
 
-	private String getQueryStr(StatisPage page) { 
+	private String getQueryStr(StatisPage page) {
 		StringBuilder query = new StringBuilder(
 				"select * from table_tongji_page_url where 1=1 ");
-		query.append(getWhereSql(page)); 
+		query.append(getWhereSql(page));
 		return query.toString();
 	}
-	
-	private String getUpdateStr(StatisPage condition,StatisPage newPage) { 
+
+	private String getUpdateStr(StatisPage condition, StatisPage newPage) {
 		StringBuilder query = new StringBuilder(
 				"update table_tongji_page_url set ");
 		if (!StringUtils.isEmpty(newPage.getUrl())) {
@@ -142,11 +104,11 @@ public class StatisPageDao {
 		}
 		query = query.deleteCharAt(query.lastIndexOf(","));
 		query.append("  where 1=1 ");
-		query.append(getWhereSql(condition)); 
+		query.append(getWhereSql(condition));
 		return query.toString();
 	}
-	
-	private String getWhereSql(StatisPage page) { 
+
+	private String getWhereSql(StatisPage page) {
 		StringBuilder query = new StringBuilder("");
 		if (page == null) {
 			return query.append(" and 1=2").toString();
@@ -164,7 +126,7 @@ public class StatisPageDao {
 		}
 
 		if (page.getStatus() != null) {
-			query.append(" and status = '" + page.getStatus().getType() + "' ");
+			query.append(" and status = '" + page.getStatus() + "' ");
 		}
 
 		if (!StringUtils.isEmpty(page.getDeleteFlag())) {
@@ -184,15 +146,13 @@ public class StatisPageDao {
 			PreparedStatement ps = null;
 			ps = con.prepareStatement(getQueryStr(page));
 			ResultSet rs = ps.executeQuery();
-			ResultSetMetaData m = rs.getMetaData();
 			while (rs.next()) {
 				StatisPage sp = new StatisPage();
 				sp.setId(rs.getLong("id"));
 				sp.setTitle(rs.getString("title"));
 				sp.setUrl(rs.getString("url"));
 				sp.setDeleteFlag(rs.getString("deleteflag"));
-				sp.setStatus(StatisPageStatus.valueOf(StatisPageStatus
-						.getNameByType(rs.getInt("status"))));
+				sp.setStatus(rs.getInt("status") + "");
 				ans.add(sp);
 			}
 			if (rs != null && !rs.isClosed())

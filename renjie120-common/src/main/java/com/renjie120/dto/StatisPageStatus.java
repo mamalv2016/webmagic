@@ -39,4 +39,8 @@ public enum StatisPageStatus {
 		}
 		return "NONE";
 	}
+	
+	public String toString(){
+		return this.getType()+"";
+	}
 }

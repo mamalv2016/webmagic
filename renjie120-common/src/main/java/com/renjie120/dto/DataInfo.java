@@ -1,13 +1,43 @@
 package com.renjie120.dto;
 
+/**
+ * 统计数据
+ * @author Administrator
+ *
+ */
+
 public class DataInfo {
+	/**
+	 * 城市
+	 */
 	private String city;
+	/**
+	 * 年份
+	 */
 	private int year;
+	/**
+	 * 月份
+	 */
 	private int month;
+	/**
+	 * 环比
+	 */
 	private double huanbi;
+	/**
+	 * 同比
+	 */
 	private double tongbi;
+	/**
+	 * 定基
+	 */
 	private double dingji;
+	/**
+	 * 统计类型
+	 */
 	private StatisType statisType;
+	/**
+	 * 房屋类型
+	 */
 	private HouseType houseType;
 
 	public String getCity() {

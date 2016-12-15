@@ -2,7 +2,6 @@ package com.renjie120.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,33 +12,8 @@ import com.renjie120.common.exception.ExceptionCode;
 import com.renjie120.common.exception.ExceptionWrapper;
 import com.renjie120.db.DbPoolConnection;
 import com.renjie120.dto.StatisList;
-import com.renjie120.dto.StatisPageStatus;
 
-public class StatisListDao {
-	public static void main(String[] args) {
-		StatisListDao ado = new StatisListDao();
-		
-	
-		List<StatisList> pages = new ArrayList();
-		for(int i=0;i<100;i++){
-			StatisList page = new StatisList();
-			page.setDeleteFlag("1");
-			page.setStatus(StatisPageStatus.NEW);
-			page.setTitle("标题"+i);
-			page.setUrl("ssssssssss"+i);
-			pages.add(page);
-		} 
-		
-		ado.batchInsert(pages);
-		
-		
-		StatisList query = new StatisList();
-		query.setTitle("2");
-		
-		List<StatisList> ans = ado.query(query);
-		System.out.println(ans);
-	}
-
+public class StatisListDao { 
 	public void batchInsert(List<StatisList> pages) {
 		DbPoolConnection dbp = DbPoolConnection.getInstance();
 		DruidPooledConnection con;
@@ -52,7 +26,7 @@ public class StatisListDao {
 				StatisList sp = pages.get(k);
 				pstmt.setString(1, sp.getUrl());
 				pstmt.setString(2, sp.getDeleteFlag());
-				pstmt.setString(3, sp.getStatus().getType() + "");
+				pstmt.setString(3, sp.getStatus() );
 				pstmt.setString(4, sp.getTitle());
 				// 加入批处理
 				pstmt.addBatch();
@@ -68,13 +42,32 @@ public class StatisListDao {
 		}
 	}
 
-	public void update(StatisList page) {
-
-	}
-
-	private String getQueryStr(StatisList page) { 
+	private String getUpdateStr(StatisList condition,StatisList newPage) { 
 		StringBuilder query = new StringBuilder(
-				"select * from table_tongji_url where 1=1 ");
+				"update table_tongji_url set ");
+		if (!StringUtils.isEmpty(newPage.getUrl())) {
+			query.append(" url =? ,");
+		}
+
+		if (!StringUtils.isEmpty(newPage.getTitle())) {
+			query.append(" title  = ?,");
+		}
+
+		if (newPage.getStatus() != null) {
+			query.append("  status = ?,");
+		}
+
+		if (!StringUtils.isEmpty(newPage.getDeleteFlag())) {
+			query.append(" deleteflag = ?,");
+		}
+		query = query.deleteCharAt(query.lastIndexOf(","));
+		query.append("  where 1=1 ");
+		query.append(getWhereSql(condition)); 
+		return query.toString();
+	}
+	
+	private String getWhereSql(StatisList page) { 
+		StringBuilder query = new StringBuilder("");
 		if (page == null) {
 			return query.append(" and 1=2").toString();
 		}
@@ -91,13 +84,54 @@ public class StatisListDao {
 		}
 
 		if (page.getStatus() != null) {
-			query.append(" and status = '" + page.getStatus().getType() + "' ");
+			query.append(" and status = '" + page.getStatus()  + "' ");
 		}
 
 		if (!StringUtils.isEmpty(page.getDeleteFlag())) {
 			query.append(" and deleteflag = '" + page.getDeleteFlag() + "' ");
 		}
 
+		return query.toString();
+	}
+	
+	public void update(StatisList condition,StatisList newPage) {
+		DbPoolConnection dbp = DbPoolConnection.getInstance();
+		DruidPooledConnection con;
+		try {
+			con = dbp.getConnection(); 
+			String sql = getUpdateStr(condition,newPage);
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			int index = 1;
+			if (!StringUtils.isEmpty(newPage.getUrl())) {
+				pstmt.setString(index++, newPage.getUrl());
+			}
+
+			if (!StringUtils.isEmpty(newPage.getTitle())) {
+				pstmt.setString(index++, newPage.getTitle());
+			}
+
+			if (newPage.getStatus() != null) {
+				pstmt.setString(index++, newPage.getStatus());
+			}
+
+			if (!StringUtils.isEmpty(newPage.getDeleteFlag())) {
+				pstmt.setString(index++, newPage.getDeleteFlag());
+			} 
+			 
+			pstmt.execute();  
+			con.close();
+			pstmt.close();
+			dbp = null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new ExceptionWrapper(ExceptionCode.DB_FAIL);
+		}
+	}
+
+	private String getQueryStr(StatisList page) { 
+		StringBuilder query = new StringBuilder(
+				"select * from table_tongji_url where 1=1 ");
+		query.append(getWhereSql(page)); 
 		return query.toString();
 	}
 
@@ -111,15 +145,13 @@ public class StatisListDao {
 			PreparedStatement ps = null;
 			ps = con.prepareStatement(getQueryStr(page));
 			ResultSet rs = ps.executeQuery();
-			ResultSetMetaData m = rs.getMetaData();
 			while (rs.next()) {
 				StatisList sp = new StatisList();
 				sp.setId(rs.getLong("id"));
 				sp.setTitle(rs.getString("title"));
 				sp.setUrl(rs.getString("url"));
 				sp.setDeleteFlag(rs.getString("deleteflag"));
-				sp.setStatus(StatisPageStatus.valueOf(StatisPageStatus
-						.getNameByType(rs.getInt("status"))));
+				sp.setStatus( rs.getInt("status")+"");
 				ans.add(sp);
 			}
 			if (rs != null && !rs.isClosed())
