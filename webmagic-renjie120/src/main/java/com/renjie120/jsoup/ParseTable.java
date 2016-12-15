@@ -9,15 +9,31 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.alibaba.druid.pool.DruidPooledConnection;
+import com.renjie120.common.exception.ExceptionCode;
+import com.renjie120.common.exception.ExceptionWrapper;
+import com.renjie120.dao.NewCommercialHouseNutzDao;
+import com.renjie120.dao.NewHouseDataNutzDao;
+import com.renjie120.dao.NewHouseSortDataNutzDao;
+import com.renjie120.dao.SecHouseDataNutzDao;
+import com.renjie120.dao.SecHouseSortDataNutzDao;
 import com.renjie120.db.DbPoolConnection;
 import com.renjie120.dto.DataInfo;
+import com.renjie120.dto.NewCommercialHouseData;
+import com.renjie120.dto.NewHouseData;
+import com.renjie120.dto.NewHouseSortData;
+import com.renjie120.dto.SecHouseData;
+import com.renjie120.dto.SecHouseSortData;
+import com.renjie120.dto.StatisType;
 
 /**
  * 解析table对象，提取出来对应的表格数据.
+ * 
  * @author Administrator
  *
  */
@@ -34,7 +50,7 @@ public abstract class ParseTable implements IParseTable {
 		dataes = new ArrayList<DataInfo>();
 		allCity = new ArrayList<String>();
 		maps = new HashMap<String, DataInfo>();
-		parseTable(); 
+		parseTable();
 	}
 
 	public int getYear() {
@@ -66,15 +82,21 @@ public abstract class ParseTable implements IParseTable {
 		}
 	}
 
+	private boolean isFirstRow(String str) {
+		Pattern pattern = Pattern.compile("([0-9]+)年([0-9]+)月");
+		Matcher matcher = pattern.matcher(str);
+		return matcher.find();
+	}
+
 	abstract List<DataInfo> parseCityAndData(Element tr);
 
 	public boolean validateTable() {
 		boolean result = true;
 		if (table == null) {
-			throw new NullPointerException("待解析dom元素未设置");
+			throw new ExceptionWrapper(ExceptionCode.DOM_NOT_FOUND);
 		}
 		if (!table.tagName().equals("table")) {
-			throw new IllegalArgumentException("待解析对象不是table");
+			throw new ExceptionWrapper(ExceptionCode.DOM_ISNOT_TABLE);
 		}
 		return result;
 	}
@@ -98,20 +120,76 @@ public abstract class ParseTable implements IParseTable {
 				con.close();
 				dbp = null;
 			}
-		} catch (SQLException e) { 
+		} catch (SQLException e) {
 			e.printStackTrace();
+		}
+	}
+ 
+	private <T> List<T> changeDatas(
+			List<DataInfo> dataes,Class<T> a) {
+		List<T> ans = new ArrayList<T>();
+		try {
+			if (!CollectionUtils.isEmpty(dataes)) {
+				for (DataInfo _data : dataes) {
+					T newD = a.newInstance();
+					BeanUtils.copyProperties(newD, _data);
+					ans.add(newD);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ans;
+	}
+	 
+
+	public void newSaveToDb() {
+		if (dataes != null && dataes.size() > 0) {
+			DataInfo firstData = dataes.get(0);
+			StatisType statisType = firstData.getStatisType();
+			if (statisType == StatisType.NEW_COMMERCIAL_HOUSE) {
+				List<NewCommercialHouseData> newDatas = changeDatas(dataes,NewCommercialHouseData.class);
+				NewCommercialHouseNutzDao dao = new NewCommercialHouseNutzDao();
+				dao.batchInsert(newDatas);
+			} else if (statisType == StatisType.NEW_HOUSE) {
+				List<NewHouseData> newDatas = changeDatas(dataes,NewHouseData.class); 
+				NewHouseDataNutzDao dao = new NewHouseDataNutzDao();
+				dao.batchInsert(newDatas);
+			} else if (statisType == StatisType.NEW_HOUSE_SORTED) { 
+				List<NewHouseSortData> newDatas = changeDatas(dataes,NewHouseSortData.class); 
+				NewHouseSortDataNutzDao dao = new NewHouseSortDataNutzDao();
+				dao.batchInsert(newDatas);
+			} else if (statisType == StatisType.SECOND_HANDS_HOUSE) {
+				List<SecHouseData> newDatas = changeDatas(dataes,SecHouseData.class);  
+				SecHouseDataNutzDao dao = new SecHouseDataNutzDao();
+				dao.batchInsert(newDatas);
+			} else if (statisType == StatisType.SECOND_HANDS_HOUSE_SORTED) { 
+				List<SecHouseSortData> newDatas = changeDatas(dataes,SecHouseSortData.class);  
+				SecHouseSortDataNutzDao dao = new SecHouseSortDataNutzDao();
+				dao.batchInsert(newDatas);
+			}
 		}
 	}
 
 	public void parseTable() {
 		if (validateTable()) {
 			Elements trs = table.select("tr");
-			int row = 1;
-			String title = trs.get(0).text();
+			int startRow = 0;
+			for (Element tr : trs) {
+				String t = tr.text();
+				if (isFirstRow(t)) {
+					break;
+				}
+				startRow++;
+			}
+
+			String title = trs.get(startRow).text();
 			parseYearAndMonth(title);
 
+			int row = 1;
+			startRow = startRow + 4;
 			for (Element tr : trs) {
-				if (row > 4) {
+				if (row > startRow) {
 					dataes.addAll(parseCityAndData(tr));
 				}
 				row++;

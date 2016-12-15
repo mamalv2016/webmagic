@@ -15,6 +15,15 @@ public class ExceptionCode {
 	public final static ExceptionCode DB_FAIL = new ExceptionCode("2006",
 			"查询数据库出现异常");
 
+	public final static ExceptionCode DOM_NOT_FOUND = new ExceptionCode("3001",
+			"待解析dom元素未找到");
+
+	public final static ExceptionCode URL_PARSE_ERROR = new ExceptionCode(
+			"4001", "解析[%s]的连接出现异常");
+
+	public final static ExceptionCode DOM_ISNOT_TABLE = new ExceptionCode(
+			"3002", "待解析对象不是table");
+
 	/********************************************* 机酒动态打包ExceptionCode *******************************************************************/
 	public String clientErrMessage(Object... vars) {
 		return null == this.clientMessageFmt ? null : String.format(

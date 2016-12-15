@@ -1,9 +1,12 @@
 package com.renjie120.db;
 
+import java.io.IOException;
+
 import javax.sql.DataSource;
 
 import org.nutz.dao.Dao;
 import org.nutz.dao.impl.NutDao;
+import org.nutz.dao.util.DaoUp;
 import org.nutz.ioc.Ioc;
 import org.nutz.ioc.impl.NutIoc;
 import org.nutz.ioc.loader.json.JsonLoader;
@@ -26,20 +29,32 @@ public class NutzDao {
 		return InstanceHolder.INSTANCE;
 	}
 
-	public Dao getDao() {
-		Ioc ioc = new NutIoc(new JsonLoader("dao.js"));
-		DataSource ds = ioc.get(DataSource.class);
-		Dao dao = new NutDao(ds);
-		return dao;
+	public static Dao getDao() {
+		try {
+			Dao dao = DaoUp.me().dao();
+			if(dao==null){
+				DaoUp.me().init("config.properties");
+				dao = DaoUp.me().dao();
+			} 
+			return dao;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		return null;
+//		Ioc ioc = new NutIoc(new JsonLoader("dao.js"));
+//		DataSource ds = ioc.get(DataSource.class);
+//		Dao dao = new NutDao(ds);
+		
 	}
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		Dao dao = NutzDao.getInstance().getDao();
 		StatisList p = new StatisList();
 		p.setDeleteFlag("1");
 		p.setTitle("test");
 		p.setUrl("11111111");
-		p.setStatus(StatisPageStatus.FAILURE.toString()); 
+		p.setStatus(StatisPageStatus.FAILURE.toString());
 		dao.insert(p);
 		System.out.println(p.getId());
 	}

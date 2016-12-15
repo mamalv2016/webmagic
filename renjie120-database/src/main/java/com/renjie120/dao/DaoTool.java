@@ -15,7 +15,7 @@ public abstract class DaoTool<T> implements IDao<T> {
 		Dao dao = NutzDao.getInstance().getDao();
 		for (T t : pages) {
 			dao.insert(t);
-		}
+		} 
 	}
 
 	@Override
@@ -37,13 +37,13 @@ public abstract class DaoTool<T> implements IDao<T> {
 	abstract Cnd makeQueryCondition(T condition);
 
 	@Override
-	public int update(T condition, T newPage) {
+	public int update(T oldObj, T newObj) {
 		Dao dao = NutzDao.getInstance().getDao();
-		Chain chain = makeUpdateValue(newPage);
+		Chain chain = makeUpdateValue(newObj);
 
-		Cnd cnd = makeUpdateWhere(condition);
+		Cnd cnd = makeUpdateWhere(oldObj);
  
-		return dao.update(condition.getClass(), chain, cnd );
+		return dao.update(newObj.getClass(), chain, cnd );
 	}
 
 	@Override

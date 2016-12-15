@@ -20,6 +20,7 @@ public class ParseNewCommercialHouseTable extends ParseTable {
 	public ParseNewCommercialHouseTable(Element table) {
 		super(table);
 	}
+	
 
 	protected List<DataInfo> parseCityAndData(Element tr) {
 		List<DataInfo> ans = new ArrayList<DataInfo>();

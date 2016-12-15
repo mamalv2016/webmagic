@@ -4,11 +4,11 @@ import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 
 import com.alibaba.druid.util.StringUtils;
-import com.renjie120.dto.NewHouseSortData;
+import com.renjie120.dto.NewHouseData;
 
-public class NewHouseDataNutzDao extends DaoTool<NewHouseSortData> { 
+public class NewHouseDataNutzDao extends DaoTool<NewHouseData> { 
 	@Override
-	Chain makeUpdateValue(NewHouseSortData condition) {
+	Chain makeUpdateValue(NewHouseData condition) {
 		Chain ans = null;
 		if (condition != null) {
 			if (!StringUtils.isEmpty(condition.getCity())) {
@@ -42,7 +42,7 @@ public class NewHouseDataNutzDao extends DaoTool<NewHouseSortData> {
 	}
 
 	@Override
-	Cnd makeUpdateWhere(NewHouseSortData condition) {
+	Cnd makeUpdateWhere(NewHouseData condition) {
 		Cnd c = null;
 		if (condition != null) {
 			if (condition.getId() != null && condition.getId() > 0) {
@@ -78,7 +78,7 @@ public class NewHouseDataNutzDao extends DaoTool<NewHouseSortData> {
 	}
 
 	@Override
-	Cnd makeQueryCondition(NewHouseSortData condition) {
+	Cnd makeQueryCondition(NewHouseData condition) {
 		Cnd c = null;
 		if (condition != null) {
 			if (condition.getId() != null && condition.getId() > 0) {

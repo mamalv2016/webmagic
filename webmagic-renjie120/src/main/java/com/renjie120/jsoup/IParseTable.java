@@ -15,4 +15,9 @@ public interface IParseTable {
 	 * 保存到数据库
 	 */
 	public void saveToDb();
+	
+	/**
+	 * 调用nutz的方法保存到数据库
+	 */
+	public void newSaveToDb();
 }

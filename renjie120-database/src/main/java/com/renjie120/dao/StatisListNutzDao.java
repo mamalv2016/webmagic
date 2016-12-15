@@ -1,8 +1,5 @@
 package com.renjie120.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.nutz.dao.Chain;
 import org.nutz.dao.Cnd;
 
@@ -11,7 +8,7 @@ import com.renjie120.dto.StatisList;
 
 public class StatisListNutzDao extends DaoTool<StatisList> {
 	
-
+	
 	@Override
 	Chain makeUpdateValue(StatisList condition) {
 		Chain ans = null;
