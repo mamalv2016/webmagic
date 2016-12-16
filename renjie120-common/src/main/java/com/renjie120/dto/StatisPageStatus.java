@@ -1,7 +1,7 @@
 package com.renjie120.dto;
 
 public enum StatisPageStatus {
-	NEW("新建", 1), READ("已读", 2), SUCCESS("处理成功", 3), FAILURE("处理失败", 4), NONE(
+	NEW("新建", 1), PASS("不处理", 2), SUCCESS("处理成功", 3), FAILURE("处理失败", 4), NONE(
 			"默认", 5);
 	private String cnName;
 	private int type;

@@ -29,9 +29,9 @@ public class ParseNewHouseSortTable extends ParseTable {
 		Element huanbi = it.next();
 		Element dingji = it.next();
 		data.setCity(cityname);
-		data.setTongbi(Double.parseDouble(tongbi.text()));
-		data.setHuanbi(Double.parseDouble(huanbi.text()));
-		data.setDingji(Double.parseDouble(dingji.text()));
+		data.setTongbi(parseDouble(tongbi.text()));
+		data.setHuanbi(parseDouble(huanbi.text()));
+		data.setDingji(parseDouble(dingji.text()));
 		data.setYear(year);
 		data.setStatisType(StatisType.NEW_HOUSE_SORTED);
 		data.setHouseType(houseType);

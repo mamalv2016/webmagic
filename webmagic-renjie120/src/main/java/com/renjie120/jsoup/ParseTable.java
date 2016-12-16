@@ -55,6 +55,13 @@ public abstract class ParseTable implements IParseTable {
 		parseTable();
 	}
 
+	protected double parseDouble(String str){
+		if("--".equals(str)){
+			return 0;
+		}else
+			return Double.parseDouble(str);
+	}
+	
 	public int getYear() {
 		return year;
 	}

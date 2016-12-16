@@ -9,7 +9,7 @@ import us.codecraft.webmagic.processor.PageProcessor;
 
 public class Tongjiju implements PageProcessor {
 	private static String startUrl = "http://www.stats.gov.cn/was5/web/search?page=1&channelid=288041&orderby=-DOCRELTIME&was_custom_expr=like%2870%E4%B8%AA%E5%A4%A7%E4%B8%AD%E5%9F%8E%E5%B8%82%29%2Fsen&perpage=10&outlinepage=10";
-//	private static String startUrl = "http://www.stats.gov.cn/tjsj/zxfb/201606/t20160617_1368635.html";
+//	private static String startUrl = "http://www.stats.gov.cn/tjsj/zxfb/201304/t20130418_12962.html";
 	// 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等site
 	private Site site = Site
 			.me()

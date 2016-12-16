@@ -33,7 +33,7 @@ public class PageHandlerFirst extends AbstractHandler {
 		if (pageVo == null) {
 			pageVo = new StatisPage();
 			pageVo.setDeleteFlag("0");
-			pageVo.setStatus(StatisPageStatus.FAILURE.toString());
+			pageVo.setStatus(StatisPageStatus.PASS.toString());
 			pageVo.setUrl(url);
 			pageVo.setInfo(startTime + "--解析失败.不是需要处理的url.");
 			pageVo.setTitle(title.html());
@@ -46,7 +46,7 @@ public class PageHandlerFirst extends AbstractHandler {
 				e1.printStackTrace();
 			}
 			 
-			newPageVo.setStatus(StatisPageStatus.FAILURE.toString());
+			newPageVo.setStatus(StatisPageStatus.PASS.toString());
 			newPageVo.setInfo(startTime + "--解析失败.不是需要处理的url.");
 			dao.update(pageVo, newPageVo);
 		} 
