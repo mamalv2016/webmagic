@@ -44,12 +44,14 @@ public abstract class ParseTable implements IParseTable {
 	protected int month;
 	protected List<DataInfo> dataes;
 	protected Map<String, DataInfo> maps;
-
-	public ParseTable(Element table) {
+	private String title ; 
+	public ParseTable(Element table,String title) {
 		this.table = table;
+		this.title = title;
 		dataes = new ArrayList<DataInfo>();
 		allCity = new ArrayList<String>();
-		maps = new HashMap<String, DataInfo>();
+		maps = new HashMap<String, DataInfo>(); 
+		parseYearAndMonth();
 		parseTable();
 	}
 
@@ -73,16 +75,16 @@ public abstract class ParseTable implements IParseTable {
 		return maps;
 	}
 
-	private void parseYearAndMonth(String str) {
+	protected void parseYearAndMonth() {
 		Pattern pattern = Pattern.compile("([0-9]+)年([0-9]+)月");
-		Matcher matcher = pattern.matcher(str);
+		Matcher matcher = pattern.matcher(title);
 		while (matcher.find()) {
 			year = Integer.parseInt(matcher.group(1));
 			month = Integer.parseInt(matcher.group(2));
 		}
 	}
 
-	private boolean isFirstRow(String str) {
+	protected boolean isFirstRow(String str) {
 		Pattern pattern = Pattern.compile("([0-9]+)年([0-9]+)月");
 		Matcher matcher = pattern.matcher(str);
 		return matcher.find();
@@ -180,10 +182,7 @@ public abstract class ParseTable implements IParseTable {
 					break;
 				}
 				startRow++;
-			}
-
-			String title = trs.get(startRow).text();
-			parseYearAndMonth(title);
+			} 
 
 			int row = 1;
 			startRow = startRow + 4;

@@ -27,6 +27,7 @@ public class PageHandler2 extends AbstractHandler {
 		Document doc = Jsoup.parse(page.getHtml().get());
 		Elements title = doc.select("head title");
 		String url = page.getUrl().toString();
+		String _t = title.html(); 
 		StatisPageNutzDao dao = new StatisPageNutzDao();
 		String startTime = DateTool.getStringCurrentDateTime();
 		// 第一种解析方式.
@@ -60,15 +61,15 @@ public class PageHandler2 extends AbstractHandler {
 		// 进行解析
 		try {
 			ParseNewHouseTable2 t1 = new ParseNewHouseTable2(
-					allP.get(tableLen - 5));
+					allP.get(tableLen - 5),_t);
 			ParseNewCommercialHouseTable2 t2 = new ParseNewCommercialHouseTable2(
-					allP.get(tableLen - 4));
+					allP.get(tableLen - 4),_t);
 			ParseSecHandlHouseTable2 t3 = new ParseSecHandlHouseTable2(
-					allP.get(tableLen - 3));
+					allP.get(tableLen - 3),_t);
 			ParseNewHouseSortTable2 t4 = new ParseNewHouseSortTable2(
-					allP.get(tableLen - 2));
+					allP.get(tableLen - 2),_t);
 			ParseSecHandsHouseSortTable2 t5 = new ParseSecHandsHouseSortTable2(
-					allP.get(tableLen - 1));
+					allP.get(tableLen - 1),_t);
 
 			t1.newSaveToDb();
 			t2.newSaveToDb();

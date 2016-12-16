@@ -18,8 +18,8 @@ import com.renjie120.dto.StatisType;
  *
  */
 public class ParseSecHandsHouseSortTable extends ParseTable {
-	public ParseSecHandsHouseSortTable(Element table) {
-		super(table);
+	public ParseSecHandsHouseSortTable(Element table,String title) {
+		super(table,title);
 	}
 
 	private DataInfo parseAData(Iterator<Element> it, String cityname,

@@ -17,8 +17,8 @@ import com.renjie120.dto.StatisType;
  *
  */
 public class ParseSecHandlHouseTable extends ParseTable {
-	public ParseSecHandlHouseTable(Element table) {
-		super(table);
+	public ParseSecHandlHouseTable(Element table,String title) {
+		super(table,title);
 	}
 
 	protected List<DataInfo> parseCityAndData(Element tr) {

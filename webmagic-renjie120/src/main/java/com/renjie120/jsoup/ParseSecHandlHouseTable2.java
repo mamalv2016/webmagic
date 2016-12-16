@@ -17,8 +17,8 @@ import com.renjie120.dto.StatisType;
  *
  */
 public class ParseSecHandlHouseTable2 extends ParseTable {
-	public ParseSecHandlHouseTable2(Element table) {
-		super(table);
+	public ParseSecHandlHouseTable2(Element table,String title) {
+		super(table,title);
 	}
 
 	protected List<DataInfo> parseCityAndData(Element tr) {
@@ -55,4 +55,19 @@ public class ParseSecHandlHouseTable2 extends ParseTable {
 				+","+data.getDingji()+" )");
 		return ans;
 	} 
+	
+	@Override
+	public void parseTable() {
+		if (validateTable()) {
+			Elements trs = table.select("tr");
+			int startRow = 3;   
+			int row = 1; 
+			for (Element tr : trs) {
+				if (row > startRow) {
+					dataes.addAll(parseCityAndData(tr));
+				}
+				row++;
+			}
+		}
+	}
 }

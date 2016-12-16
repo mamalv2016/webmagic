@@ -4,31 +4,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.collections.CollectionUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
-
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
-import com.renjie120.common.exception.ExceptionCode;
-import com.renjie120.common.exception.ExceptionWrapper;
-import com.renjie120.dao.StatisPageNutzDao;
-import com.renjie120.dto.StatisPage;
-import com.renjie120.dto.StatisPageStatus;
-import com.renjie120.jsoup.ParseNewCommercialHouseTable;
-import com.renjie120.jsoup.ParseNewHouseSortTable;
-import com.renjie120.jsoup.ParseNewHouseTable;
-import com.renjie120.jsoup.ParseSecHandlHouseTable;
-import com.renjie120.jsoup.ParseSecHandsHouseSortTable;
-import com.renjie120.tool.DateTool;
-
 public class Tongjiju implements PageProcessor {
 	private static String startUrl = "http://www.stats.gov.cn/was5/web/search?page=1&channelid=288041&orderby=-DOCRELTIME&was_custom_expr=like%2870%E4%B8%AA%E5%A4%A7%E4%B8%AD%E5%9F%8E%E5%B8%82%29%2Fsen&perpage=10&outlinepage=10";
+//	private static String startUrl = "http://www.stats.gov.cn/tjsj/zxfb/201308/t20130818_13014.html";
 	// 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等site
 	private Site site = Site
 			.me()
@@ -99,10 +82,10 @@ public class Tongjiju implements PageProcessor {
 				.regex("http://www.stats.gov.cn/was5/web/search\\?page=\\S+")
 				.match()) {
 			// 添加新的分页列表頁面
-//			page.addTargetRequests(page.getHtml().xpath("//dl[@class=fenye]")
-//					.links()
-//					.regex("http://www.stats.gov.cn/was5/web/search\\?\\S+")
-//					.all());
+			page.addTargetRequests(page.getHtml().xpath("//dl[@class=fenye]")
+					.links()
+					.regex("http://www.stats.gov.cn/was5/web/search\\?\\S+")
+					.all());
 
 			// 添加发布详情页(带后面到了pipeline中再处理)
 			List<String> allUrl = page

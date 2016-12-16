@@ -26,6 +26,7 @@ public class PageHandler1 extends AbstractHandler {
 		Page page = request.getPage();
 		Document doc = Jsoup.parse(page.getHtml().get());
 		Elements title = doc.select("head title");
+		String _t = title.html(); 
 		String url = page.getUrl().toString();
 		StatisPageNutzDao dao = new StatisPageNutzDao();
 		String startTime = DateTool.getStringCurrentDateTime();
@@ -40,7 +41,7 @@ public class PageHandler1 extends AbstractHandler {
 			pageVo.setDeleteFlag("0");
 			pageVo.setStatus(StatisPageStatus.NEW.toString());
 			pageVo.setUrl(url);
-			pageVo.setTitle(title.html());
+			pageVo.setTitle(_t);
 			dao.insert(pageVo);
 		} else {
 			String status = pageVo.getStatus();
@@ -60,15 +61,15 @@ public class PageHandler1 extends AbstractHandler {
 		// 进行解析
 		try {
 			ParseNewHouseTable t1 = new ParseNewHouseTable(
-					allP.get(tableLen - 5));
+					allP.get(tableLen - 5),_t);
 			ParseNewCommercialHouseTable t2 = new ParseNewCommercialHouseTable(
-					allP.get(tableLen - 4));
+					allP.get(tableLen - 4),_t);
 			ParseSecHandlHouseTable t3 = new ParseSecHandlHouseTable(
-					allP.get(tableLen - 3));
+					allP.get(tableLen - 3),_t);
 			ParseNewHouseSortTable t4 = new ParseNewHouseSortTable(
-					allP.get(tableLen - 2));
+					allP.get(tableLen - 2),_t);
 			ParseSecHandsHouseSortTable t5 = new ParseSecHandsHouseSortTable(
-					allP.get(tableLen - 1));
+					allP.get(tableLen - 1),_t);
 
 			t1.newSaveToDb();
 			t2.newSaveToDb();

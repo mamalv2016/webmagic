@@ -8,7 +8,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import com.renjie120.jsoup.ParseNewHouseSortTable;
 import com.renjie120.jsoup.util.MockUtil;
 
 public class ParseHtml {
@@ -27,8 +26,8 @@ public class ParseHtml {
 //		ParseNewHouseTable t1 = new ParseNewHouseTable(allP.get(0));
 //		ParseNewCommercialHouseTable t2 = new ParseNewCommercialHouseTable(allP.get(1));
 //		ParseSecHandlHouseTable t3 = new ParseSecHandlHouseTable(allP.get(2));
-		ParseNewHouseSortTable t4 = new ParseNewHouseSortTable(allP.get(3));
-		t4.saveToDb();
+//		ParseNewHouseSortTable t4 = new ParseNewHouseSortTable(allP.get(3));
+//		t4.saveToDb();
 //		ParseSecHandsHouseSortTable t5 = new ParseSecHandsHouseSortTable(allP.get(4)); 
 	}
 }
