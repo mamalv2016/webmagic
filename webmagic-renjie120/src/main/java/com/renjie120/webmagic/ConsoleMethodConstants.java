@@ -11,4 +11,5 @@ public class ConsoleMethodConstants {
 	
 	public final static int METHOD_3 = 3;
 
+	public final static int METHOD_4 = 4;
 }

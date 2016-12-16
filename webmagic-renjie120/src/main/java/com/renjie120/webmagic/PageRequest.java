@@ -45,8 +45,15 @@ public class PageRequest extends AbstractPageRequest {
 			Elements allP2 = doc.select("table.NOBORDER");
 			if (allP2.size() == 5) {
 				return ConsoleMethodConstants.METHOD_2;
-			} else
-				return ConsoleMethodConstants.NOT_SUITABLE_TABLE;
+			} else{
+				Elements allP3 = doc.select("table.MsoTableGrid");
+				if(allP3.size()==5){
+					return ConsoleMethodConstants.METHOD_4;
+				}
+				else
+					return ConsoleMethodConstants.NOT_SUITABLE_TABLE;
+			}
+				
 		}
 	}
 
