@@ -1,6 +1,8 @@
 package com.renjie120.webmagic;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
@@ -23,6 +25,7 @@ import com.renjie120.jsoup.ParseNewHouseSortTable;
 import com.renjie120.jsoup.ParseNewHouseTable;
 import com.renjie120.jsoup.ParseSecHandlHouseTable;
 import com.renjie120.jsoup.ParseSecHandsHouseSortTable;
+import com.renjie120.tool.DateTool;
 
 public class Tongjiju implements PageProcessor {
 	private static String startUrl = "http://www.stats.gov.cn/was5/web/search?page=1&channelid=288041&orderby=-DOCRELTIME&was_custom_expr=like%2870%E4%B8%AA%E5%A4%A7%E4%B8%AD%E5%9F%8E%E5%B8%82%29%2Fsen&perpage=10&outlinepage=10";
@@ -57,21 +60,15 @@ public class Tongjiju implements PageProcessor {
 	}
 
 	/**
-	 * 判断数据库中是否存在值指定的url对应的数据，防止多次重复插入
+	 * 根据标题判断是否要继续进行筛选.
 	 * 
-	 * @param url
+	 * @param title
 	 * @return
 	 */
-	private StatisPage queryPage(String url) {
-		StatisPage pageVo = new StatisPage();
-		pageVo.setUrl(url);
-		StatisPageNutzDao dao = new StatisPageNutzDao();
-		List<StatisPage> ans = dao.query(pageVo);
-		if (CollectionUtils.isEmpty(ans)) {
-			return null;
-		} else {
-			return ans.get(0);
-		}
+	private boolean chargeByTitle(String title) {
+		Pattern pattern = Pattern.compile("([0-9]+)年([0-9]+)月70个");
+		Matcher matcher = pattern.matcher(title);
+		return matcher.find();
 	}
 
 	/**
@@ -79,77 +76,20 @@ public class Tongjiju implements PageProcessor {
 	 * 
 	 * @param page
 	 */
-	private void processDetail(Page page) {
-		Document doc = Jsoup.parse(page.getHtml().get());
-		Elements title = doc.select("head title");
-		Elements allP = doc.select("table.MsoNormalTable");
-		// 如果有5个表格就进行解析处理.
-		if (allP.size() == 5) {
-			int tableLen = allP.size();
-			size++;
+	private void processDetail(Page page) { 
+		AbstractHandler handler01 = new PageHandler1();
+		AbstractHandler handler02 = new PageHandler2();
+		AbstractHandler handler03 = new PageHandlerLast();
 
-			String url = page.getUrl().toString();
-			
-			StatisPageNutzDao dao = new StatisPageNutzDao();
-			// 先根据url查询数据库中是否已经存在
-			StatisPage pageVo = queryPage(url);
-			//不存在，说明之前没有处理过,新建一个记录，保存到page表中，表示是新插入.
-			if (pageVo == null) {
-				pageVo = new StatisPage();
-				pageVo.setDeleteFlag("0");
-				pageVo.setStatus(StatisPageStatus.NEW.toString());
-				pageVo.setUrl(url);
-				pageVo.setTitle(title.html());
-				dao.insert(pageVo);
-			}else{
-				String status = pageVo.getStatus();
-				//如果之前已经处理成功了，表明不用再处理了。
-				if(status.equals(StatisPageStatus.SUCCESS.toString())){
-					return ;
-				}
-			}
+		// 进行链的组装，即头尾相连，一层套一层
+		handler01.setNextHandler(handler02);
+		handler02.setNextHandler(handler03);
 
-			StatisPage newPageVo = new StatisPage();
-			try {
-				BeanUtils.copyProperties(newPageVo, pageVo);
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
+		// 创建请求并提交到指责链中进行处理
+		AbstractPageRequest request01 = new PageRequest(page); 
 
-			// 进行解析
-			try {
-				ParseNewHouseTable t1 = new ParseNewHouseTable(
-						allP.get(tableLen - 5));
-				ParseNewCommercialHouseTable t2 = new ParseNewCommercialHouseTable(
-						allP.get(tableLen - 4));
-				ParseSecHandlHouseTable t3 = new ParseSecHandlHouseTable(
-						allP.get(tableLen - 3));
-				ParseNewHouseSortTable t4 = new ParseNewHouseSortTable(
-						allP.get(tableLen - 2));
-				ParseSecHandsHouseSortTable t5 = new ParseSecHandsHouseSortTable(
-						allP.get(tableLen - 1));
-
-				t1.newSaveToDb();
-				t2.newSaveToDb();
-				t3.newSaveToDb();
-				t4.newSaveToDb();
-				t5.newSaveToDb();
-
-				// 解析完之后，更新解析状态为成功..
-				newPageVo.setStatus(StatisPageStatus.SUCCESS.toString());
-				dao.update(pageVo, newPageVo);
-
-			} catch (Exception e) { 
-				// 出现异常，就更新状态为失败
-				newPageVo.setStatus(StatisPageStatus.FAILURE.toString());
-				dao.update(pageVo, newPageVo);
-				
-				e.printStackTrace();
-				
-				throw new ExceptionWrapper(e.getMessage(),ExceptionCode.URL_PARSE_ERROR, url);
-			}
-
-		}
+		// 每次提交都是从链头开始遍历
+		handler01.handlerRequest(request01);  
 	}
 
 	@Override
@@ -159,10 +99,10 @@ public class Tongjiju implements PageProcessor {
 				.regex("http://www.stats.gov.cn/was5/web/search\\?page=\\S+")
 				.match()) {
 			// 添加新的分页列表頁面
-			page.addTargetRequests(page.getHtml().xpath("//dl[@class=fenye]")
-					.links()
-					.regex("http://www.stats.gov.cn/was5/web/search\\?\\S+")
-					.all());
+//			page.addTargetRequests(page.getHtml().xpath("//dl[@class=fenye]")
+//					.links()
+//					.regex("http://www.stats.gov.cn/was5/web/search\\?\\S+")
+//					.all());
 
 			// 添加发布详情页(带后面到了pipeline中再处理)
 			List<String> allUrl = page

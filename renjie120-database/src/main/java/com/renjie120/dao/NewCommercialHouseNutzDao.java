@@ -37,6 +37,7 @@ public class NewCommercialHouseNutzDao extends DaoTool<NewCommercialHouseData> {
 				ans = (ans == null ? Chain.make("tongbi", condition.getTongbi())
 						: ans.add("tongbi", condition.getTongbi()));
 			}
+			
 		}
 		return ans;
 	}

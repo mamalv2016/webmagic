@@ -140,8 +140,7 @@ public abstract class ParseTable implements IParseTable {
 			e.printStackTrace();
 		}
 		return ans;
-	}
-	 
+	} 
 
 	public void newSaveToDb() {
 		if (dataes != null && dataes.size() > 0) {

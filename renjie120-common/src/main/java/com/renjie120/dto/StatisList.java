@@ -16,6 +16,8 @@ public class StatisList {
 	// url
 	@Column
 	private String url;
+	@Column
+	private String info;
 	// 删除标记
 	@Column
 	private String deleteFlag;
@@ -25,6 +27,14 @@ public class StatisList {
 	// 处理标记
 	@Column
 	private String status;
+
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
 
 	public String getDeleteFlag() {
 		return deleteFlag;

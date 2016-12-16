@@ -29,6 +29,10 @@ public class StatisPageNutzDao extends DaoTool<StatisPage> {
 				ans = (ans == null ? Chain.make("url", condition.getUrl())
 						: ans.add("url", condition.getUrl()));
 			}
+			if (!StringUtils.isEmpty(condition.getInfo())) {
+				ans = (ans == null ? Chain.make("info", condition.getInfo())
+						: ans.add("info", condition.getInfo()));
+			}
 		}
 		return ans;
 	}
