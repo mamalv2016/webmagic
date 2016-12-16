@@ -19,7 +19,7 @@ import com.renjie120.jsoup.ParseSecHandlHouseTable;
 import com.renjie120.jsoup.ParseSecHandsHouseSortTable;
 import com.renjie120.tool.DateTool;
 
-public class PageHandler1 extends AbstractHandler {
+public class PageHandler3 extends AbstractHandler {
 
 	@Override
 	protected void handle(AbstractPageRequest request) {
@@ -61,21 +61,27 @@ public class PageHandler1 extends AbstractHandler {
 		// 进行解析
 		try {
 			ParseNewHouseTable t1 = new ParseNewHouseTable(
-					allP.get(tableLen - 5),_t);
+					allP.get(0),_t);
 			ParseNewCommercialHouseTable t2 = new ParseNewCommercialHouseTable(
-					allP.get(tableLen - 4),_t);
+					allP.get(1),_t);
 			ParseSecHandlHouseTable t3 = new ParseSecHandlHouseTable(
-					allP.get(tableLen - 3),_t);
+					allP.get(2),_t);
 			ParseNewHouseSortTable t4 = new ParseNewHouseSortTable(
-					allP.get(tableLen - 2),_t);
-			ParseSecHandsHouseSortTable t5 = new ParseSecHandsHouseSortTable(
-					allP.get(tableLen - 1),_t);
+					allP.get(3),_t);
+			ParseNewHouseSortTable t5 = new ParseNewHouseSortTable(
+					allP.get(4),_t);
+			ParseSecHandsHouseSortTable t6 = new ParseSecHandsHouseSortTable(
+					allP.get(5),_t);
+			ParseSecHandsHouseSortTable t7 = new ParseSecHandsHouseSortTable(
+					allP.get(6),_t);
 
 			t1.newSaveToDb();
 			t2.newSaveToDb();
 			t3.newSaveToDb();
 			t4.newSaveToDb();
 			t5.newSaveToDb();
+			t6.newSaveToDb();
+			t7.newSaveToDb();
 
 			// 解析完之后，更新解析状态为成功..
 			newPageVo.setStatus(StatisPageStatus.SUCCESS.toString());
@@ -98,7 +104,7 @@ public class PageHandler1 extends AbstractHandler {
 
 	@Override
 	protected int getHandlerMethod() { 
-		return ConsoleMethodConstants.METHOD_1;
+		return ConsoleMethodConstants.METHOD_3;
 	}
  
 }

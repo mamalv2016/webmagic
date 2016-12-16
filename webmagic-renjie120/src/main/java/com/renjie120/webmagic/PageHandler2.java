@@ -98,6 +98,6 @@ public class PageHandler2 extends AbstractHandler {
 	@Override
 	protected int getHandlerMethod() {
 		// TODO Auto-generated method stub
-		return 2;
+		return ConsoleMethodConstants.METHOD_2;
 	}
 }

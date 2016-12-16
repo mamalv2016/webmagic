@@ -11,7 +11,7 @@ import com.renjie120.dto.DataInfo;
 import com.renjie120.dto.StatisType;
 
 /**
- * 解析新房销售数据
+ * 解析一半的新房销售数据
  * 保存表table_new_house
  * @author Administrator
  *

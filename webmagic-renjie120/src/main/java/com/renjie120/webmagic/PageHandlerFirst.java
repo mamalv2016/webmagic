@@ -12,7 +12,12 @@ import com.renjie120.dto.StatisPage;
 import com.renjie120.dto.StatisPageStatus;
 import com.renjie120.tool.DateTool;
 
-public class PageHandlerLast extends AbstractHandler {
+/**
+ * 在进行解析页面处理最开始的时候进行title等基本信息的判断
+ * @author Administrator
+ *
+ */
+public class PageHandlerFirst extends AbstractHandler {
 
 	@Override
 	protected void handle(AbstractPageRequest request) {
@@ -30,7 +35,7 @@ public class PageHandlerLast extends AbstractHandler {
 			pageVo.setDeleteFlag("0");
 			pageVo.setStatus(StatisPageStatus.FAILURE.toString());
 			pageVo.setUrl(url);
-			pageVo.setInfo(startTime + "--解析失败.没有找到对应的table解析方式");
+			pageVo.setInfo(startTime + "--解析失败.不是需要处理的url.");
 			pageVo.setTitle(title.html());
 			dao.insert(pageVo);
 		} else {
@@ -40,15 +45,17 @@ public class PageHandlerLast extends AbstractHandler {
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
-
+			 
 			newPageVo.setStatus(StatisPageStatus.FAILURE.toString());
-			newPageVo.setInfo(startTime + "--解析失败.没有找到对应的table解析方式");
+			newPageVo.setInfo(startTime + "--解析失败.不是需要处理的url.");
 			dao.update(pageVo, newPageVo);
-		}
+		} 
+		 
 	}
 
 	@Override
 	protected int getHandlerMethod() { 
-		return ConsoleMethodConstants.NOT_SUITABLE_TABLE;
+		return ConsoleMethodConstants.NOT_SUITABLE_URL;
 	}
+ 
 }
