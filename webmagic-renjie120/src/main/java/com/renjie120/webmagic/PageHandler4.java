@@ -12,27 +12,26 @@ import com.renjie120.common.exception.ExceptionWrapper;
 import com.renjie120.dao.StatisPageNutzDao;
 import com.renjie120.dto.StatisPage;
 import com.renjie120.dto.StatisPageStatus;
-import com.renjie120.jsoup.ParseNewCommercialHouseTable2;
-import com.renjie120.jsoup.ParseNewHouseSortTable2;
-import com.renjie120.jsoup.ParseNewHouseTable2;
-import com.renjie120.jsoup.ParseSecHandlHouseTable2;
-import com.renjie120.jsoup.ParseSecHandsHouseSortTable2;
+import com.renjie120.jsoup.ParseNewCommercialHouseTable;
+import com.renjie120.jsoup.ParseNewHouseSortTable;
+import com.renjie120.jsoup.ParseNewHouseTable;
+import com.renjie120.jsoup.ParseSecHandlHouseTable;
+import com.renjie120.jsoup.ParseSecHandsHouseSortTable;
 import com.renjie120.tool.DateTool;
 
-public class PageHandler2 extends AbstractHandler {
+public class PageHandler4 extends AbstractHandler {
 
 	@Override
 	protected void handle(AbstractPageRequest request) {
 		Page page = request.getPage();
 		Document doc = Jsoup.parse(page.getHtml().get());
 		Elements title = doc.select("head title");
-		String url = page.getUrl().toString();
 		String _t = title.html(); 
+		String url = page.getUrl().toString();
 		StatisPageNutzDao dao = new StatisPageNutzDao();
 		String startTime = DateTool.getStringCurrentDateTime();
 		// 第一种解析方式.
-		Elements allP = doc.select("table.NOBORDER");
-		int tableLen = allP.size();
+		Elements allP = doc.select("table.MsoTableGrid"); 
 		// 先根据url查询数据库中是否已经存在
 		StatisPage pageVo = queryPage(url);
 		// 不存在，说明之前没有处理过,新建一个记录，保存到page表中，表示是新插入.
@@ -41,9 +40,9 @@ public class PageHandler2 extends AbstractHandler {
 			pageVo.setDeleteFlag("0");
 			pageVo.setStatus(StatisPageStatus.NEW.toString());
 			pageVo.setUrl(url);
-			pageVo.setTitle(title.html());
+			pageVo.setTitle(_t);
 			dao.insert(pageVo);
-		} 
+		}  
 
 		StatisPage newPageVo = new StatisPage();
 		try {
@@ -54,22 +53,22 @@ public class PageHandler2 extends AbstractHandler {
 
 		// 进行解析
 		try {
-			ParseNewHouseTable2 t1 = new ParseNewHouseTable2(
-					allP.get(tableLen - 5),_t);
-			ParseNewCommercialHouseTable2 t2 = new ParseNewCommercialHouseTable2(
-					allP.get(tableLen - 4),_t);
-			ParseSecHandlHouseTable2 t3 = new ParseSecHandlHouseTable2(
-					allP.get(tableLen - 3),_t);
-			ParseNewHouseSortTable2 t4 = new ParseNewHouseSortTable2(
-					allP.get(tableLen - 2),_t);
-			ParseSecHandsHouseSortTable2 t5 = new ParseSecHandsHouseSortTable2(
-					allP.get(tableLen - 1),_t);
+			ParseNewHouseTable t1 = new ParseNewHouseTable(
+					allP.get(0),_t);
+			ParseNewCommercialHouseTable t2 = new ParseNewCommercialHouseTable(
+					allP.get(1),_t);
+			ParseSecHandlHouseTable t3 = new ParseSecHandlHouseTable(
+					allP.get(2),_t);
+			ParseNewHouseSortTable t4 = new ParseNewHouseSortTable(
+					allP.get(3),_t);
+			ParseSecHandsHouseSortTable t5 = new ParseSecHandsHouseSortTable(
+					allP.get(4),_t); 
 
 			t1.newSaveToDb();
 			t2.newSaveToDb();
 			t3.newSaveToDb();
 			t4.newSaveToDb();
-			t5.newSaveToDb();
+			t5.newSaveToDb(); 
 
 			// 解析完之后，更新解析状态为成功..
 			newPageVo.setStatus(StatisPageStatus.SUCCESS.toString());
@@ -88,10 +87,11 @@ public class PageHandler2 extends AbstractHandler {
 			throw new ExceptionWrapper(e.getMessage(),
 					ExceptionCode.URL_PARSE_ERROR, url);
 		}
-	} 
-	@Override
-	protected int getHandlerMethod() {
-		// TODO Auto-generated method stub
-		return ConsoleMethodConstants.METHOD_2;
 	}
+
+	@Override
+	protected int getHandlerMethod() { 
+		return ConsoleMethodConstants.METHOD_4;
+	}
+ 
 }

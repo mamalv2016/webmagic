@@ -1,15 +1,22 @@
 package com.renjie120.webmagic;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.collections.CollectionUtils;
 
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import com.renjie120.dao.StatisPageNutzDao;
+import com.renjie120.dto.StatisPage;
+import com.renjie120.dto.StatisPageStatus;
+
 public class Tongjiju implements PageProcessor {
-//	private static String startUrl = "http://www.stats.gov.cn/was5/web/search?page=1&channelid=288041&orderby=-DOCRELTIME&was_custom_expr=like%2870%E4%B8%AA%E5%A4%A7%E4%B8%AD%E5%9F%8E%E5%B8%82%29%2Fsen&perpage=10&outlinepage=10";
-	private static String startUrl = "http://www.stats.gov.cn/tjsj/zxfb/201403/t20140318_525747.html";
+	private static String startUrl = "http://www.stats.gov.cn/was5/web/search?page=1&channelid=288041&orderby=-DOCRELTIME&was_custom_expr=like%2870%E4%B8%AA%E5%A4%A7%E4%B8%AD%E5%9F%8E%E5%B8%82%29%2Fsen&perpage=10&outlinepage=10";
+//	private static String startUrl = "http://www.stats.gov.cn/tjsj/zxfb/201212/t20121218_12917.html";
 	// 部分一：抓取网站的相关配置，包括编码、抓取间隔、重试次数等site
 	private Site site = Site
 			.me()
@@ -40,6 +47,18 @@ public class Tongjiju implements PageProcessor {
 		this.urls = urls;
 	} 
 
+	protected StatisPage queryPage(String url) {
+		StatisPage pageVo = new StatisPage();
+		pageVo.setUrl(url);
+		StatisPageNutzDao dao = new StatisPageNutzDao();
+		List<StatisPage> ans = dao.query(pageVo);
+		if (CollectionUtils.isEmpty(ans)) {
+			return null;
+		} else {
+			return ans.get(0);
+		}
+	}
+	
 	/**
 	 * 解析具体的页面.
 	 * 
@@ -50,13 +69,17 @@ public class Tongjiju implements PageProcessor {
 		AbstractHandler handler01 = new PageHandler1();
 		AbstractHandler handler02 = new PageHandler2();
 		AbstractHandler handler03 = new PageHandler3();
+		AbstractHandler handler04 = new PageHandler4();
+		AbstractHandler handler05 = new PageHandler5();
 		AbstractHandler handler09 = new PageHandlerLast();
 
 		// 进行链的组装，即头尾相连，一层套一层
 		handler00.setNextHandler(handler01);
 		handler01.setNextHandler(handler02);
 		handler02.setNextHandler(handler03);
-		handler03.setNextHandler(handler09);
+		handler03.setNextHandler(handler04);
+		handler04.setNextHandler(handler05);
+		handler05.setNextHandler(handler09);
 
 		// 创建请求并提交到指责链中进行处理
 		AbstractPageRequest request01 = new PageRequest(page); 
@@ -83,13 +106,31 @@ public class Tongjiju implements PageProcessor {
 					.xpath("//ul[@class=center_list_contlist]/li[@class!=cont_line]/span[@class=cont_tit][1]/font[1]/*")
 					.regex("urlstr\\s=\\s'(http://www.stats.gov.cn/tjsj/zxfb/\\S+)'",
 							1).all();
-			urls = allUrl;
+			urls = new ArrayList<String>();
+			
+			for(String u:allUrl){
+				StatisPage pageVo = queryPage(u);
+				if(pageVo==null){
+					urls.add(u);
+				}else{
+					String status = pageVo.getStatus();
+					// 如果之前已经处理成功了，表明不用再处理了。
+					if (!status.equals(StatisPageStatus.SUCCESS.toString())) {
+						//如果不是pass的连接，就重新准备进行爬虫处理一遍.
+						if(!StatisPageStatus.PASS.toString().equals(status)){
+							urls.add(u);
+						}
+					}
+				}
+			} 
+			
 			page.putField("urls", urls);
-			page.addTargetRequests(allUrl);
+			page.addTargetRequests(urls);
 		}
 		// 如果是具体的详情页.
 		else if (page.getUrl().regex("http://www.stats.gov.cn/tjsj/zxfb/\\S+")
-				.match()) {
+				.match()) { 
+			
 			processDetail(page);
 		}
 	}

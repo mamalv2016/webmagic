@@ -43,13 +43,7 @@ public class PageHandler1 extends AbstractHandler {
 			pageVo.setUrl(url);
 			pageVo.setTitle(_t);
 			dao.insert(pageVo);
-		} else {
-			String status = pageVo.getStatus();
-			// 如果之前已经处理成功了，表明不用再处理了。
-			if (status.equals(StatisPageStatus.SUCCESS.toString())) {
-				return;
-			}
-		}
+		} 
 
 		StatisPage newPageVo = new StatisPage();
 		try {
