@@ -2,6 +2,7 @@ package com.renjie120.dto;
 
 /**
  * 统计数据
+ * 
  * @author Administrator
  *
  */
@@ -38,7 +39,7 @@ public class DataInfo {
 	/**
 	 * 房屋类型
 	 */
-	private HouseType houseType;
+	private int sortType;
 
 	public String getCity() {
 		return city;
@@ -96,12 +97,12 @@ public class DataInfo {
 		this.statisType = statisType;
 	}
 
-	public HouseType getHouseType() {
-		return houseType;
+	public int getSortType() {
+		return sortType;
 	}
 
-	public void setHouseType(HouseType houseType) {
-		this.houseType = houseType;
+	public void setSortType(int sortType) {
+		this.sortType = sortType;
 	}
 
 }

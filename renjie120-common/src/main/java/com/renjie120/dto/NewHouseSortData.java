@@ -41,6 +41,9 @@ public class NewHouseSortData {
 	 */
 	@Column
 	private double huanbi;
+	
+	@Column
+	private int sortType;
 	/**
 	 * 同比
 	 */
@@ -54,6 +57,14 @@ public class NewHouseSortData {
 
 	public String getCity() {
 		return city;
+	}
+
+	public int getSortType() {
+		return sortType;
+	}
+
+	public void setSortType(int sortType) {
+		this.sortType = sortType;
 	}
 
 	public void setCity(String city) {

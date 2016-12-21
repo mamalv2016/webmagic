@@ -2,7 +2,7 @@ package com.renjie120.dto;
 
 public enum StatisType {
 	NEW_HOUSE("1"), NEW_COMMERCIAL_HOUSE("2"), SECOND_HANDS_HOUSE("3"), NEW_HOUSE_SORTED(
-			"4"), SECOND_HANDS_HOUSE_SORTED("4");
+			"4"), SECOND_HANDS_HOUSE_SORTED("5");
 	private String cnName;
 	private int type;
 

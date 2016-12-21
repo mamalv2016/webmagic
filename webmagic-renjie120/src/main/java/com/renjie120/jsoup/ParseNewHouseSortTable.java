@@ -34,7 +34,7 @@ public class ParseNewHouseSortTable extends ParseTable {
 		data.setDingji(parseDouble(dingji.text()));
 		data.setYear(year);
 		data.setStatisType(StatisType.NEW_HOUSE_SORTED);
-		data.setHouseType(houseType);
+		data.setSortType(houseType.getType());
 		data.setMonth(month);
 		return data;
 	}
@@ -66,7 +66,7 @@ public class ParseNewHouseSortTable extends ParseTable {
 	protected String generateSql(DataInfo data) {
 		String ans = new String("insert into table_new_house_sort (year,month,city,tongbi,huanbi,dingji,sorttype) "
 				+ "values( "+data.getYear()+","+data.getMonth()+",'"+data.getCity()+"',"+data.getTongbi()+","+data.getHuanbi()
-				+","+data.getDingji()+","+data.getHouseType().getType()+" )");
+				+","+data.getDingji()+","+data.getSortType()+" )");
 		return ans;
 	} 
 	 

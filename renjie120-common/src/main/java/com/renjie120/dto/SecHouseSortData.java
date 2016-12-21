@@ -20,7 +20,8 @@ public class SecHouseSortData {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	//分类类型
+	private int sortType;
 	/**
 	 * 城市
 	 */
@@ -58,6 +59,14 @@ public class SecHouseSortData {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public int getSortType() {
+		return sortType;
+	}
+
+	public void setSortType(int sortType) {
+		this.sortType = sortType;
 	}
 
 	public int getYear() {
