@@ -34,7 +34,7 @@ public class ParseNewHouseTable extends ParseTable {
 			Element tongbi = it.next();
 			Element huanbi = it.next();
 			Element dingji = it.next();
-			data.setCity(city.text().replace("　", "").replace(" ", ""));
+			data.setCity(parseCityName(city.text()));
 			data.setTongbi(parseDouble(tongbi.text()));
 			data.setHuanbi(parseDouble(huanbi.text()));
 			data.setDingji(parseDouble(dingji.text()));

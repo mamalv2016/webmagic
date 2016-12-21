@@ -54,7 +54,13 @@ public abstract class ParseTable implements IParseTable {
 		parseYearAndMonth();
 		parseTable();
 	}
-
+ 
+	protected static String parseCityName(String city){
+		if(city==null)
+			return null;
+		return city.replace("　", "").replace(" ", "").replace(" ", "").replace("*", "");
+	}
+	
 	protected double parseDouble(String str){
 		if("--".equals(str)){
 			return 0;
