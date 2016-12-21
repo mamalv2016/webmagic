@@ -21,6 +21,7 @@ public class SecHouseSortData {
 		this.id = id;
 	}
 	//分类类型
+	@Column
 	private int sortType;
 	/**
 	 * 城市
