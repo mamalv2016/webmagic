@@ -9,23 +9,24 @@
 		<version>0.5.4-SNAPSHOT</version>
 	</parent>
 	<groupId>com.renjie120</groupId>
-	<artifactId>renjie120-database</artifactId> 
-	<name>renjie120-database</name>
+	<artifactId>renjie120-batch</artifactId> 
+	<name>renjie120-batch</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>com.renjie120</groupId>
-			<artifactId>renjie120-common</artifactId>
-			<version>0.5.4-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId> 
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>com.renjie120</groupId>
+			<artifactId>renjie120-common</artifactId>
+			<version>0.5.4-SNAPSHOT</version>
+		</dependency>
+
 	</dependencies>
 </project>

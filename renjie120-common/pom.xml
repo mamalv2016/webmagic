@@ -9,8 +9,7 @@
 		<version>0.5.4-SNAPSHOT</version>
 	</parent>
 	<groupId>com.renjie120</groupId>
-	<artifactId>renjie120-common</artifactId>
-	<version>0.5.4-SNAPSHOT</version>
+	<artifactId>renjie120-common</artifactId> 
 	<name>renjie120-common</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -19,35 +18,13 @@
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<artifactId>junit</artifactId> 
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.renjie120</groupId>
-			<artifactId>nutz</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-beanutils</groupId>
-			<artifactId>commons-beanutils</artifactId>
-			<version>1.8.3</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.jms</groupId>
-			<artifactId>jms</artifactId>
-			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-core</artifactId>
-			<version>5.5.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.activemq</groupId>
-			<artifactId>activemq-pool</artifactId>
-			<version>5.7.0</version>
-		</dependency>
+			<artifactId>renjie120-base</artifactId>
+			<version>0.5.4-SNAPSHOT</version>
+		</dependency> 
 	</dependencies>
 </project>

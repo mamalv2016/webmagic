@@ -1,4 +1,5 @@
 package com.renjie120.mq;
+ 
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -21,13 +22,17 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 public class SenderPagerUrl {
 	private static final int SEND_NUMBER = 5;
 
-	private static final String QUEUENAME = "needConsoleUrls";
+	
 	private ConnectionFactory connf;
 	private Connection conn = null;
 	private Session session;
 	private Destination des;
 	private MessageProducer prod;
 
+	public static void main(String[] args){
+		SenderPagerUrl pro = new SenderPagerUrl();
+		
+	}
 	public SenderPagerUrl() {
 
 		connf = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_USER,
@@ -40,7 +45,7 @@ public class SenderPagerUrl {
 			session = conn
 					.createSession(Boolean.TRUE, Session.AUTO_ACKNOWLEDGE);
 
-			des = session.createQueue(QUEUENAME);
+			des = session.createQueue(MQConstants.QUEUENAME);
 
 			prod = session.createProducer(des);
 
