@@ -19,7 +19,7 @@ import org.apache.activemq.ActiveMQConnectionFactory;
  * @author Administrator
  *
  */
-public class SenderPagerUrl {
+public class PagerUrlSender {
 	private static final int SEND_NUMBER = 5;
 
 	
@@ -28,16 +28,15 @@ public class SenderPagerUrl {
 	private Session session;
 	private Destination des;
 	private MessageProducer prod;
-
-	public static void main(String[] args){
-		SenderPagerUrl pro = new SenderPagerUrl();
-		
-	}
-	public SenderPagerUrl() {
+ 
+	public PagerUrlSender() {
 
 		connf = new ActiveMQConnectionFactory(ActiveMQConnection.DEFAULT_USER,
-				ActiveMQConnection.DEFAULT_PASSWORD, "tcp://localhost:61616");
+				ActiveMQConnection.DEFAULT_PASSWORD, "tcp://localhost:61616"); 
+		
+	}
 
+	public void sendMessage(String url){
 		try {
 			conn = connf.createConnection();
 			conn.start();
@@ -51,7 +50,8 @@ public class SenderPagerUrl {
 
 			prod.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
-			sendMessage(session, prod);
+			TextMessage message = session.createTextMessage(url); 
+			prod.send(message); 
 
 			session.commit();
 		} catch (Exception e) {
@@ -61,21 +61,11 @@ public class SenderPagerUrl {
 				if (conn != null) {
 					conn.close();
 				}
-			} catch (JMSException e) {
-				// TODO Auto-generated catch block
+			} catch (JMSException e) { 
 				e.printStackTrace();
 			}
 		}
 
-	}
-
-	public static void sendMessage(Session session, MessageProducer producer)
-			throws Exception {
-		for (int i = 1; i < SEND_NUMBER; i++) {
-			TextMessage message = session.createTextMessage("测试发送消息" + i);
-			System.out.println("mq端发送消息：" + i);
-			producer.send(message);
-		}
-	}
+	} 
 
 }

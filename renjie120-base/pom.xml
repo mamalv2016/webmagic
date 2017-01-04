@@ -9,7 +9,7 @@
 		<version>0.5.4-SNAPSHOT</version>
 	</parent>
 	<groupId>com.renjie120</groupId>
-	<artifactId>renjie120-base</artifactId> 
+	<artifactId>renjie120-base</artifactId>
 	<name>renjie120-base</name>
 	<url>http://maven.apache.org</url>
 	<properties>
@@ -18,7 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
-			<artifactId>junit</artifactId> 
+			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -56,6 +56,12 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.8.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
 		</dependency>
 	</dependencies>
 </project>
