@@ -1,4 +1,4 @@
-package com.renjie120.math.test;
+package org.renjie120.common;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
