@@ -46,8 +46,7 @@ public class HtmlTag {
 			return Joiner.on("").useForNull("")
 					.appendTo(new StringBuilder().append(""), ans.iterator())
 					.toString();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) { 
 			e.printStackTrace();
 		}
 		return "";

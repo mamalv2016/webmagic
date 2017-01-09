@@ -10,6 +10,10 @@ import java.util.ServiceLoader;
 
 import com.google.common.base.Preconditions;
 import com.google.common.io.Files;
+import com.renjie120.math.calcstrategy.BankCalc;
+import com.renjie120.math.calcstrategy.DengBenCacl;
+import com.renjie120.math.calcstrategy.DengBenxiCacl;
+import com.renjie120.math.calcstrategy.FuliAndZuijiaCacl;
 import com.renjie120.math.htmlprint.HtmlPrintCalcWrapper;
 
 public class CalcStrategyManager {
@@ -33,15 +37,36 @@ public class CalcStrategyManager {
 	 * @return
 	 */
 	private static ICaclSumMethod chooseStrategy(CalcInput input) {
-		ServiceLoader<ICaclSumMethod> loader = ServiceLoader
-				.load(ICaclSumMethod.class);
+		return chooseStrategy(input,true);
+	}
+	
+	/**
+	 * 找到在service中配置的全部的类，进行测试找到合适的算法，通过accept进行判断是否满足.
+	 * @param input
+	 * @param fromConfig 是否从配置文件中获取
+	 * @return
+	 */
+	private static ICaclSumMethod chooseStrategy(CalcInput input,boolean fromConfig) {
 		ICaclSumMethod choosedMethod = null;
-
-		// 选择对应的算法策略
-		for (ICaclSumMethod service : loader) {
-			if (service.accept(input)) {
-				choosedMethod = service;
-				break;
+		if(fromConfig){
+			ServiceLoader<ICaclSumMethod> loader = ServiceLoader
+					.load(ICaclSumMethod.class); 
+			// 选择对应的算法策略
+			for (ICaclSumMethod service : loader) {
+				if (service.accept(input)) {
+					choosedMethod = service;
+					break;
+				}
+			}
+		}else{
+			if(input.calcMethod==1){
+				choosedMethod =new BankCalc();
+			}else if(input.calcMethod==3){
+				choosedMethod =new DengBenCacl();
+			}else if(input.calcMethod==4){
+				choosedMethod =new DengBenxiCacl();
+			}else if(input.calcMethod==2){
+				choosedMethod =new FuliAndZuijiaCacl();
 			}
 		}
 		Preconditions.checkNotNull(choosedMethod, "没有找到合适的算法！");
@@ -69,7 +94,7 @@ public class CalcStrategyManager {
 	 */
 	public static void saveHtmlFile(CalcInput input, String fileName,
 			String title) {
-		ICaclSumMethod choosedMethod = chooseStrategy(input);
+		ICaclSumMethod choosedMethod = chooseStrategy(input,false);
 		HtmlPrintCalcWrapper htmlpnt = new HtmlPrintCalcWrapper(choosedMethod);
 		try {
 			Files.write(htmlpnt.getHtml(input, title).getBytes("utf-8"),
